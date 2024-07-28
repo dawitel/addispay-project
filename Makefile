@@ -4,7 +4,7 @@ PROTOC_GEN_GO = protoc-gen-go
 PROTOC_GEN_GO_GRPC = protoc-gen-go-grpc
 PROTO_DIR = internal/proto
 PROTO_FILES = $(wildcard $(PROTO_DIR)/*.proto)
-OUT_DIR = internal/grpc
+OUT_DIR = internal/proto
 GO_OUT = $(OUT_DIR)
 GO_GRPC_OUT = $(OUT_DIR)
 GO_FILES = $(wildcard $(GO_OUT)/*.go)
@@ -18,7 +18,7 @@ tools:
 # Generate Go code from proto files
 .PHONY: proto
 proto: $(PROTO_FILES)
-	$(PROTOC) --proto_path=$(PROTO_DIR) --go_out=$(GO_OUT) --go-grpc_out=$(GO_GRPC_OUT) $(PROTO_FILES)
+	$(PROTOC) --proto_path=$(PROTO_DIR) --go_out=$(GO_OUT) --go-grpc_out=$(GO_GRPC_OUT) $(PROTO_FILES) 
 
 # Build the Go project
 .PHONY: build

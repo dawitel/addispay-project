@@ -7,8 +7,8 @@ grpc:
     # TLS settings (if needed)
     tls:
       enabled: false
-      cert_file: "path/to/cert.pem"
-      key_file: "path/to/key.pem"
+      cert_file: "config/cert.pem"
+      key_file: "config/key.pem"
 
 pulsar:
   serviceURL: "pulsar://localhost:6650"
@@ -28,11 +28,10 @@ logging:
   output: "stdout" # Options: stdout, stderr, or a file path
 
 database:
-  # In-memory DB or mock DB settings if needed for testing
   inMemory: true
   # connectionString: "user:password@/dbname" # Uncomment if using an actual DB
 
-# Add any additional application-specific settings
+
 application:
   environment: "development" # Options: development, production
   # Other custom settings...
