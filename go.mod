@@ -1,4 +1,4 @@
-module github.com/dawitel/addispay-project
+module github.com/dawitel/addispay-project.git
 
 go 1.22.0
 

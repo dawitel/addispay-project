@@ -1,8 +1,5 @@
-Below is a comprehensive and industry-standard README file for your project. This README includes sections that cover the project overview, setup instructions, usage, testing, and more.
-
----
-
-# Order Processing and Payment System
+# Addispay Financial Services take-home project 
+## Order Processing and Payment System
 
 This project implements an order processing and payment system using Apache Pulsar functions, gRPC, and Docker. The system is designed to handle high-concurrency order requests, process payments, and finalize orders, all in an asynchronous and scalable manner.
 
@@ -23,7 +20,7 @@ This project implements an order processing and payment system using Apache Puls
 This system is composed of multiple services:
 - **gRPC Server**: Receives order requests and forwards them to the order processing service.
 - **Order Processing Service**: A Pulsar function that processes incoming orders.
-- **Payment Service**: A Pulsar function that processes payment for the orders.
+- **Payment Processing Service**: A Pulsar function that processes payment for the orders.
 - **Order Finalization Service**: A Pulsar function that finalizes the order processing based on payment results.
 
 The services communicate via Apache Pulsar topics, with data being transferred in JSON format between Pulsar functions.
@@ -39,32 +36,8 @@ The architecture of this system involves several components working together:
 
 ### Architecture Diagram
 
-```plantuml
-@startuml
-actor User
-participant "gRPC Client" as gRPCClient
-participant "gRPC Server" as gRPCServer
-participant "Order Service (Pulsar Function)" as OrderService
-participant "Pulsar Topic: orders-topic" as OrdersTopic
-participant "Pulsar Topic: processed-orders-topic" as ProcessedOrdersTopic
-participant "Pulsar Topic: payment-results-topic" as PaymentResultsTopic
-participant "Payment Service (Pulsar Function)" as PaymentService
-participant "Order Finalization Service (Pulsar Function)" as OrderFinalization
-
-User -> gRPCClient: Submit OrderRequest
-gRPCClient -> gRPCServer: Send OrderRequest
-gRPCServer -> OrdersTopic: Publish Order (JSON)
-
-OrdersTopic -> OrderService: Order (JSON)
-OrderService -> ProcessedOrdersTopic: Publish Processed Order (JSON)
-
-ProcessedOrdersTopic -> PaymentService: Processed Order (JSON)
-PaymentService -> PaymentResultsTopic: Publish Payment Result (JSON)
-
-PaymentResultsTopic -> OrderFinalization: Payment Result (JSON)
-OrderFinalization -> OrderService: Log Order Status and ID
-@enduml
-```
+![Architecture Diagram](docs/architecture.svg)
+For more detail on the undelying architecture, thought processes, things that i learned, and components, see the [Architecture](docs/architecture.md) document.
 
 ## Getting Started
 
@@ -103,32 +76,50 @@ OrderFinalization -> OrderService: Log Order Status and ID
 order-payment-system/
 ├── cmd/
 │   ├── grpc_server/
-│   │   └── main.go
+│       └── main.go
+├── configs/
+│   ├── config.yml
+├── docs/
+│   ├── architecture.md
+|   ├── architecture.svg
 ├── internal/
 │   ├── domain/
 │   │   ├── models.go
 │   ├── grpc/
-│   │   ├── server.go
+│   │   ├── order_services.go
 │   ├── pulsar/
-│   │   ├── order_processing.go
-│   │   ├── payment_processing.go
-│   │   ├── order_finalization.go
+│   │   ├── order_processor.go
+│   │   ├── payment_processor.go
+│   │   ├── order_finalizer.go
 │   ├── proto/
 │   │   ├── order.proto
+│   ├── util
+│       ├── config.go
+│       ├── logger.go
+├── scripts/
+│   ├── deploy.sh
+|   ├── start.sh
+|   ├── stop.sh
+|   ├── test.sh
+|   ├── build.sh
+|   ├── deploy_pulsar_functions.sh
 ├── test/
 │   ├── grpc/
-│   │   ├── server_test.go
+│   │   ├── order_service_test.go
 │   ├── pulsar/
-│   │   ├── order_processing_test.go
-│   │   ├── payment_processing_test.go
-│   │   ├── order_finalization_test.go
-├── Dockerfile
+│       ├── order_processor_test.go
+│       ├── payment_processor_test.go
+│       ├── order_finalizer_test.go
+├── air.toml
+├──.gitignore
+├── .goreleaser.yml
+├── CONTRIBUTING.md
 ├── docker-compose.yml
-├── start.sh
-├── stop.sh
-├── build.sh
-├── deploy_pulsar_functions.sh
-├── test.sh
+├── Dockerfile
+├── go.mod
+├── go.sum
+├── LICENSE
+├── Makefile
 └── README.md
 ```
 
@@ -170,8 +161,3 @@ Contributions are welcome! Please follow the [contribution guidelines](CONTRIBUT
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
-### Notes
-
-- **Replace Placeholders**: Make sure to replace placeholders like `https://github.com/your-repo/order-payment-system.git` and any other references specific to your environment or project.
-- **Custom Sections**: Add any other sections that might be relevant, such as acknowledgments, FAQ, or more detailed deployment instructions.
-- **Updating**: Keep the README updated with any changes in the project structure or configuration to ensure clarity for future users and contributors.

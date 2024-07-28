@@ -17,7 +17,7 @@ var logger = util.GetLogger()
  
 // 
 type OrderServiceServer struct {
-    proto.UnimplementedOrderServiceServer
+    pb.UnimplementedOrderServiceServer
     pulsarProducer pulsar.Producer
 }
 
@@ -27,7 +27,7 @@ func NewOrderServiceServer(producer pulsar.Producer) *OrderServiceServer {
 }
 
 // SubmitOrder submits order to the order service
-func (s *OrderServiceServer) SubmitOrder(ctx context.Context, req *proto.OrderRequest) (*proto.OrderResponse, error) {
+func (s *OrderServiceServer) SubmitOrder(ctx context.Context, req *pb.OrderRequest) (*pb.OrderResponse, error) {
     order := domain.Order{
         OrderID:  req.OrderId,
         ItemName: req.ItemName,
@@ -49,5 +49,5 @@ func (s *OrderServiceServer) SubmitOrder(ctx context.Context, req *proto.OrderRe
         return nil, err
     }
 
-    return &proto.OrderResponse{OrderId: req.OrderId, Status: "submitted"}, nil
+    return &pb.OrderResponse{OrderId: req.OrderId, Status: "submitted"}, nil
 }

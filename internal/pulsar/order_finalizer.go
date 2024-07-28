@@ -8,7 +8,7 @@ import (
     "github.com/apache/pulsar-client-go/pulsar"
 )
 
-func OrderFinalizationFunction(ctx pulsar.FunctionContext, input []byte) error {
+func OrderFinalizationFunc(ctx pulsar.FunctionContext, input []byte) error {
     var orderResponse domain.OrderResponse
     
     err := json.Unmarshal(input, &orderResponse)
@@ -17,7 +17,7 @@ func OrderFinalizationFunction(ctx pulsar.FunctionContext, input []byte) error {
         return err
     }
 
-    // Logger Error order status with the order ID
+    // Log order status with the order ID
     logger.InfoGeneral("Order ID: %s, Status: %s", orderResponse.OrderID, orderResponse.Status)
 
     return nil

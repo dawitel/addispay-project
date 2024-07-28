@@ -23,7 +23,7 @@ func getRandomStatus(statuses []string) string {
 }
 
 // PaymentProcessingFunction is a function that takes order in and processes payments
-func PaymentProcessingFunction(ctx pulsar.FunctionContext, input []byte) error {
+func PaymentProcessorFunc(ctx pulsar.FunctionContext, input []byte) error {
     
     // mock status changes
     statuses := [...]string{"FAILED", "PENDING", "SUCCESS"}

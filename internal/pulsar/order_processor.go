@@ -12,7 +12,7 @@ import (
 var logger = util.GetLogger()
 
 // OrderProcessingFunction 
-func OrderProcessingFunction(ctx pulsar.FunctionContext, input []byte) error {
+func OrderProcessorFunc(ctx pulsar.FunctionContext, input []byte) error {
     var order domain.Order
     err := json.Unmarshal(input, &order)
     if err != nil {
@@ -20,7 +20,7 @@ func OrderProcessingFunction(ctx pulsar.FunctionContext, input []byte) error {
         return err
     }
 
-    // TODO: Add order processing logic here, e.g., validation, enrichment
+    // TODO: Add order validation, enrichment
     logger.InfoGeneral("Processing order: %+v", order)
 
     output, err := json.Marshal(order)
