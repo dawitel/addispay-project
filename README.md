@@ -57,17 +57,17 @@ For more detail on the undelying architecture, thought processes, things that i 
 
 2. **Build the Docker images**:
     ```sh
-    ./build.sh
+    cd scripts && ./build.sh
     ```
 
 3. **Start the services**:
     ```sh
-    ./start.sh
+    cd scripts && ./start.sh
     ```
 
 4. **Deploy Pulsar functions**:
     ```sh
-    ./deploy_pulsar_functions.sh
+    cd scripts && ./deploy_pulsar_functions.sh
     ```
 
 ## Directory Structure
@@ -136,7 +136,7 @@ order-payment-system/
 To run tests, use the provided test script:
 
 ```sh
-./test.sh
+cd scripts && ./test.sh
 ```
 
 This script runs unit tests for the gRPC server and Pulsar functions. Ensure that the environment is properly set up before running the tests.
@@ -145,10 +145,13 @@ This script runs unit tests for the gRPC server and Pulsar functions. Ensure tha
 
 1. **Build Docker Images**:
     ```sh
-    ./build.sh
+    cd scripts && ./build.sh
     ```
 
 2. **Push to Docker Registry**: Use the `deploy.sh` script to push Docker images to your registry.
+    ```sh
+    cd scripts && ./deploy.sh
+    ```
 
 3. **Deploy**: Deploy the images to your target environment (e.g., Kubernetes, AWS ECS).
 
