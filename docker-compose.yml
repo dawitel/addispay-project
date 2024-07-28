@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  grpc-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    depends_on:
+      - pulsar
+
+  pulsar:
+    image: apachepulsar/pulsar:2.8.0
+    environment:
+      PULSAR_MEM: "-Xms256m -Xmx256m"
+    command: >
+      bash -c "bin/pulsar standalone"
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    volumes:
+      - pulsar-data:/pulsar/data
+      - pulsar-logs:/pulsar/logs
+
+  order-processing:
+    image: apachepulsar/pulsar-functions-go:2.8.0
+    environment:
+      PULSAR_SERVICE_URL: "pulsar://pulsar:6650"
+      PULSAR_FUNCTION_NAME: "OrderProcessingFunction"
+      PULSAR_INPUT_TOPIC: "orders-topic"
+      PULSAR_OUTPUT_TOPIC: "processed-orders-topic"
+    volumes:
+      - ./internal/pulsar:/functions
+
+  payment-processing:
+    image: apachepulsar/pulsar-functions-go:2.8.0
+    environment:
+      PULSAR_SERVICE_URL: "pulsar://pulsar:6650"
+      PULSAR_FUNCTION_NAME: "PaymentProcessingFunction"
+      PULSAR_INPUT_TOPIC: "processed-orders-topic"
+      PULSAR_OUTPUT_TOPIC: "payment-results-topic"
+    volumes:
+      - ./internal/pulsar:/functions
+
+  order-finalization:
+    image: apachepulsar/pulsar-functions-go:2.8.0
+    environment:
+      PULSAR_SERVICE_URL: "pulsar://pulsar:6650"
+      PULSAR_FUNCTION_NAME: "OrderFinalizationFunction"
+      PULSAR_INPUT_TOPIC: "payment-results-topic"
+    volumes:
+      - ./internal/pulsar:/functions
+
+volumes:
+  pulsar-data:
+  pulsar-logs:
