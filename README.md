@@ -18,8 +18,7 @@ This project implements an order processing and payment system using Apache Puls
 5. [Usage](#usage)
 6. [Testing](#testing)
 7. [Deployment](#deployment)
-8. [Contributing](#contributing)
-9. [License](#license)
+8. [License](#license)
 
 ## Overview
 
@@ -119,7 +118,6 @@ order-payment-system/
 ├── air.toml
 ├──.gitignore
 ├── .goreleaser.yml
-├── CONTRIBUTING.md
 ├── docker-compose.yml
 ├── Dockerfile
 ├── go.mod
@@ -161,9 +159,7 @@ This script runs unit tests for the gRPC server and Pulsar functions. Ensure tha
 
 3. **Deploy**: Deploy the images to your target environment (e.g., Kubernetes, AWS ECS).
 
-## Contributing
 
-Contributions are welcome! Please follow the [contribution guidelines](CONTRIBUTING.md) and submit a pull request.
 
 ## License
 
