@@ -13,6 +13,9 @@ var logger = util.GetLogger()
 
 // OrderProcessingFunction 
 func OrderProcessorFunc(ctx pulsar.FunctionContext, input []byte) error {
+    config := util.LoadConfig("configs/config.yaml")
+    outputTopic := config.Pulsar.Functions.orderProcessing.outputTopic
+    
     var order domain.Order
     err := json.Unmarshal(input, &order)
     if err != nil {
@@ -30,5 +33,5 @@ func OrderProcessorFunc(ctx pulsar.FunctionContext, input []byte) error {
     }
 
     // publish the results from order processing to the topic "processed-orders-topic"
-    return ctx.Output("processed-orders-topic", output)
+    return ctx.Output(outputTopic, output)
 }

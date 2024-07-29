@@ -38,7 +38,9 @@ func main() {
 
     // TCP listener for the gRPC server
     addr := config.Grpc.server.port
+
     lis, err := net.Listen("tcp", addr)
+    logger.Info("gRPC server started listening on: %v", addr)
     if err != nil {
         logger.Error("Failed to listen: %v", err)
     }
@@ -46,24 +48,35 @@ func main() {
     grpcServer := grpc.NewServer()
     proto.RegisterOrderServiceServer(grpcServer, grpc.NewOrderServiceServer(producer))
 
-    logger.Info("gRPC server started sreving on: %v", addr)
+    logger.Info("gRPC server started serving on: %v", addr)
     if err := grpcServer.Serve(lis); err != nil {
         logger.Error("gRPC server failed to serve: %v", err)
     }
 
-    if err = pf.start(OrderProcessorFunc, pf.FunctionOptions{
-        SubscriptionType: pf.keyShared
-    }); err != nil {
+    if err = pf.start(
+        OrderProcessorFunc, 
+        pf.FunctionOptions{
+            SubscriptionType: pf.keyShared
+        }
+    ); err != nil {
         logger.Error("Failed to instantiate order processor function: %v", err)
     }
-    if err = pf.start(PaymentProcessorFunc, pf.FunctionOptions{
-        SubscriptionType: pf.keyShared
-    }); err != nil {
+
+    if err = pf.start(
+        PaymentProcessorFunc, 
+        pf.FunctionOptions{
+            SubscriptionType: pf.keyShared
+        }
+    ); err != nil {
         logger.Error("Failed to instantiate order payment processor function: %v", err)
     }
-    if err = pf.start(OrderFinalizationFunc, pf.FunctionOptions{
-        SubscriptionType: pf.keyShared
-    }); err != nil {
+
+    if err = pf.start(
+        OrderFinalizationFunc, 
+        pf.FunctionOptions{
+            SubscriptionType: pf.keyShared
+        }
+    ); err != nil {
         logger.Error("Failed to instantiate order finalizer function: %v", err)
     }
 }

@@ -1,6 +1,12 @@
 # Addispay Financial Services take-home project 
 ## Order Processing and Payment System
 
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=git,docker,go,vim,aws" />
+  </a>
+</p>
+
 This project implements an order processing and payment system using Apache Pulsar functions, gRPC, and Docker. The system is designed to handle high-concurrency order requests, process payments, and finalize orders, all in an asynchronous and scalable manner.
 
 ## Table of Contents
@@ -51,7 +57,7 @@ For more detail on the undelying architecture, thought processes, things that i 
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/your-repo/order-payment-system.git
+    git clone https://github.com/dawitel/addispay-project.git
     cd order-payment-system
     ```
 
