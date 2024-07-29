@@ -5,26 +5,26 @@ PULSAR_URL="pulsar://localhost:6650"
 echo "Deploying Pulsar functions..."
 
 pulsar-admin functions create \
-  --jar path/to/order_processing_function.jar \
-  --classname com.example.OrderProcessingFunction \
+  --jar bin/orderProcessorFunc/order_processor.zip \
+  --classname main \
   --inputs orders-topic \
   --output processed-orders-topic \
-  --name order-processing-function \
+  --name order-processor-func \
   --pulsar-url $PULSAR_URL
 
 pulsar-admin functions create \
-  --jar path/to/payment_processing_function.jar \
-  --classname com.example.PaymentProcessingFunction \
+  --jar bin/paymentProcessorFunc/payment_processor.zip \
+  --classname main \
   --inputs processed-orders-topic \
   --output payment-results-topic \
-  --name payment-processing-function \
+  --name payment-processor-func \
   --pulsar-url $PULSAR_URL
 
 pulsar-admin functions create \
-  --jar path/to/order_finalization_function.jar \
-  --classname com.example.OrderFinalizationFunction \
+  --jar bin/orderFinalyzerFunc/order_finalizer.zip \
+  --classname main \
   --inputs payment-results-topic \
-  --name order-finalization-function \
+  --name order-finalizer-func \
   --pulsar-url $PULSAR_URL
 
 echo "Pulsar functions deployed."

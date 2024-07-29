@@ -23,11 +23,11 @@ services:
       - pulsar-data:/pulsar/data
       - pulsar-logs:/pulsar/logs
 
-  order-processing:
+  order-processor:
     image: apachepulsar/pulsar-functions-go:2.8.0
     environment:
       PULSAR_SERVICE_URL: "pulsar://pulsar:6650"
-      PULSAR_FUNCTION_NAME: "OrderProcessingFunction"
+      PULSAR_FUNCTION_NAME: "OrderProcessorFunct"
       PULSAR_INPUT_TOPIC: "orders-topic"
       PULSAR_OUTPUT_TOPIC: "processed-orders-topic"
     volumes:
@@ -37,7 +37,7 @@ services:
     image: apachepulsar/pulsar-functions-go:2.8.0
     environment:
       PULSAR_SERVICE_URL: "pulsar://pulsar:6650"
-      PULSAR_FUNCTION_NAME: "PaymentProcessingFunction"
+      PULSAR_FUNCTION_NAME: "PaymentProcessorFunc"
       PULSAR_INPUT_TOPIC: "processed-orders-topic"
       PULSAR_OUTPUT_TOPIC: "payment-results-topic"
     volumes:
@@ -47,7 +47,7 @@ services:
     image: apachepulsar/pulsar-functions-go:2.8.0
     environment:
       PULSAR_SERVICE_URL: "pulsar://pulsar:6650"
-      PULSAR_FUNCTION_NAME: "OrderFinalizationFunction"
+      PULSAR_FUNCTION_NAME: "OrderFinalizerFunc"
       PULSAR_INPUT_TOPIC: "payment-results-topic"
     volumes:
       - ./internal/pulsar:/functions

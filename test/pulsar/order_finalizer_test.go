@@ -10,7 +10,8 @@ import (
     "github.com/stretchr/testify/assert"
 )
 
-func TestOrderFinalizationFunction(t *testing.T) {
+// test for the order finalizer func
+func TestOrderFinalizationFunc(t *testing.T) {
     orderResponse := domain.OrderResponse{
         OrderID: "123",
         Status:  "Success",
@@ -19,8 +20,6 @@ func TestOrderFinalizationFunction(t *testing.T) {
     responseJSON, err := json.Marshal(orderResponse)
     assert.NoError(t, err)
 
-    err = pulsar.OrderFinalizationFunction(context.TODO(), responseJSON)
+    err = pulsar.OrderFinalizationFunc(context.TODO(), responseJSON)
     assert.NoError(t, err)
-
-    // Add additional assertions or mock context checks as needed
 }

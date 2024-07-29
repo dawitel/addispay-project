@@ -1,14 +1,13 @@
-package grpc
+package grpcServerPkg
 
 import (
     "context"
     "encoding/json"
 
     "github.com/dawitel/addispay-project/internal/domain"
-    pb "github.com/dawitel/addispay-project/internal/proto"
-    "github.com/dawitel/addispay-project/intenal/util"
+    pb "github.com/dawitel/addispay-project/internal/proto/proto"
+    "github.com/dawitel/addispay-project/internal/util"
 
-    "google.golang.org/protobuf/proto"
     "github.com/apache/pulsar-client-go/pulsar"
 )
 

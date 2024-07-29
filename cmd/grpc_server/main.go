@@ -2,13 +2,12 @@ package main
 
 import (
     "net"
-    "github.com/dawitel/addispay-project/internal/grpc"
-    "github.com/dawitel/addispay-project/proto"
+    "github.com/dawitel/addispay-project/internal/grpcServerPkg"
+    "github.com/dawitel/addispay-project/proto/proto"
     "github.com/dawitel/addispay-project/internal/pulsar"
-    "github.com/dawitel/addispay-project/intenal/util"
+    "github.com/dawitel/addispay-project/internal/util"
 
     "github.com/apache/pulsar-client-go/pulsar"
-    "github.com/apache/pulsar-client-go/pulsar/pf"
     "google.golang.org/grpc"
 
 )
@@ -46,36 +45,39 @@ func main() {
     }
 
     grpcServer := grpc.NewServer()
-    proto.RegisterOrderServiceServer(grpcServer, grpc.NewOrderServiceServer(producer))
+    proto.RegisterOrderServiceServer(grpcServer, grpcServerPkg.NewOrderServiceServer(producer))
 
     logger.Info("gRPC server started serving on: %v", addr)
     if err := grpcServer.Serve(lis); err != nil {
         logger.Error("gRPC server failed to serve: %v", err)
     }
 
+    // trigger the order procesor Pulsar Function
     if err = pf.start(
         OrderProcessorFunc, 
         pf.FunctionOptions{
-            SubscriptionType: pf.keyShared
+            SubscriptionType: pf.keyShared,
+        },
+        ); err != nil {
+            logger.Error("Failed to instantiate order processor function: %v", err)
         }
-    ); err != nil {
-        logger.Error("Failed to instantiate order processor function: %v", err)
-    }
-
+        
+    // trigger the payment procesor Pulsar Function
     if err = pf.start(
         PaymentProcessorFunc, 
         pf.FunctionOptions{
-            SubscriptionType: pf.keyShared
+            SubscriptionType: pf.keyShared,
+        },
+        ); err != nil {
+            logger.Error("Failed to instantiate order payment processor function: %v", err)
         }
-    ); err != nil {
-        logger.Error("Failed to instantiate order payment processor function: %v", err)
-    }
-
+        
+    // trigger the order finalizer Pulsar Function
     if err = pf.start(
         OrderFinalizationFunc, 
         pf.FunctionOptions{
-            SubscriptionType: pf.keyShared
-        }
+            SubscriptionType: pf.keyShared,
+        },
     ); err != nil {
         logger.Error("Failed to instantiate order finalizer function: %v", err)
     }

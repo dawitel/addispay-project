@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Replace these with your actual registry and image names
-DOCKER_REGISTRY="your-registry"
-IMAGE_NAME="your-image-name"
+DOCKER_REGISTRY="dawitel"
+IMAGE_NAME="addispay-project"
 TAG="latest"
 
 echo "Deploying Docker image..."

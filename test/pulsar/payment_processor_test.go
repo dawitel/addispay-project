@@ -10,7 +10,9 @@ import (
     "github.com/stretchr/testify/assert"
 )
 
-func TestPaymentProcessingFunction(t *testing.T) {
+
+// tests for the payment processor func
+func TestPaymentProcessorFunc(t *testing.T) {
     order := domain.Order{
         OrderID:  "123",
         ItemName: "Book",
@@ -21,8 +23,6 @@ func TestPaymentProcessingFunction(t *testing.T) {
     orderJSON, err := json.Marshal(order)
     assert.NoError(t, err)
 
-    err = pulsar.PaymentProcessingFunction(context.TODO(), orderJSON)
+    err = pulsar.PaymentProcessorFunc(context.TODO(), orderJSON)
     assert.NoError(t, err)
-
-    // Add additional assertions or mock context checks as needed
 }

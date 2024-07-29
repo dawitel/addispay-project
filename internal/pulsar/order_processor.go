@@ -3,7 +3,7 @@ package pulsar
 import (
     "encoding/json"
     
-    "github.com/dawitel/addispay-project/intenal/util"
+    "github.com/dawitel/addispay-project/internal/util"
     "github.com/dawitel/addispay-project/internal/domain"
 
     "github.com/apache/pulsar-client-go/pulsar"
